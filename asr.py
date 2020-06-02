@@ -158,6 +158,6 @@ def split_parts(string):
     Event_Content = find_event(auxiliar_string)
     
     #print("Exemple auxiliar string:",auxiliar_string)
-    return Event_Content,date,hour
     #return summary,start_time_string,end_time_string
+    return Event_Content,date,hour
 
