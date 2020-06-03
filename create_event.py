@@ -1,8 +1,8 @@
-import pickle
-import datefinder
 import os
-
+import pickle
 from datetime import datetime, timedelta
+
+import datefinder
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
@@ -21,6 +21,7 @@ def init_credentials():
         flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes=scopes)
         credentials = flow.run_console()
         pickle.dump(credentials, open("token.pkl", "wb"))
+    return
 
 def new_event(start, summary, end):
     credentials = pickle.load(open("token.pkl", "rb"))
@@ -34,6 +35,7 @@ def new_event(start, summary, end):
     #####Create and event
     event = create_event(credentials,calendar_id,start, summary, end_time_str=end)
     print ('Event created: %s'%(event.get('htmlLink')))
+    return
 
 def create_event(credentials,calendar_id,start_time_str, summary, duration=1,end_time_str = None, description=None, location=None):
     service = build("calendar", "v3", credentials=credentials)
@@ -46,9 +48,9 @@ def create_event(credentials,calendar_id,start_time_str, summary, duration=1,end
         matches = list(datefinder.find_dates(end_time_str))
         if len(matches):
             end_time = matches[0]
-    print('Datefinder output', datefinder.find_dates(start_time_str))
-    print('Start time: ',start_time)
-    print('End time: ',end_time)
+    #print('Datefinder output', datefinder.find_dates(start_time_str))
+    #print('Start time: ',start_time)
+    #print('End time: ',end_time)
     event = {
         'summary': summary,
         'location': location,

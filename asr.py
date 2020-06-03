@@ -1,6 +1,7 @@
 #Getting the audio
 #main
 import re
+
 import num2words
 import speech_recognition as sr
 
@@ -10,15 +11,15 @@ def recording_voice():
     # obtain audio from the microphone
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Tell Calendar what you have to do:")
+        print("Tell William what you have to do:")
         audio = r.listen(source, phrase_time_limit=10)
         print("Got it!")
     
     try:
         string = r.recognize_google(audio)
-        print("Calendar think you said: " + string)
+        print("William think you said: " + string)
     except sr.UnknownValueError:
-        print("Calendar could not understand audio")
+        print("William could not understand audio")
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
     
@@ -90,9 +91,9 @@ def find_event(string):
     event = 0
     strings = re.split("START_DATE|START_HOUR|END_HOUR|END_DATE",string)
     for l in strings:
-        if("Calendar " in l):
+        if("William " in l):
             event = l
-        if("calendar" in l):
+        if("William" in l):
             event = l
     if(event == 0):
         print("Event not understanded! Repeat it again.")
@@ -101,7 +102,7 @@ def find_event(string):
 def Get_Event_Elements(Event_Content,date,hour):
     ''' re-arange the text to a proper structure for event creation'''
     #Get summary
-    summary = re.sub(r'(Calendar|calendar)\s(I\s)?(have)\s(\w+\s)?',"SUMMARY",Event_Content)
+    summary = re.sub(r'(William|william)\s(I\s)?(have)\s(\w+\s)?',"SUMMARY",Event_Content)
     summary = re.split('SUMMARY',summary)
     summary = summary[-1]
     
@@ -158,6 +159,4 @@ def split_parts(string):
     Event_Content = find_event(auxiliar_string)
     
     #print("Exemple auxiliar string:",auxiliar_string)
-    #return summary,start_time_string,end_time_string
     return Event_Content,date,hour
-
